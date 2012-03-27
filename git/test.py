@@ -5,40 +5,37 @@ academy/gitの学習の進捗を確認するスクリプト
 """
 import cPickle
 import types
-from collections import namedtuple
-Mission = namedtuple('Mission', ['name', 'desc', 'goal', 'exit_msg'])
+import importlib
+import os
 
 MISSIONS = {}
 
-def _add_mission(name, desc, goal, exit_msg):
-    assert isinstance(name, str)
-    assert isinstance(desc, unicode)
-    assert isinstance(goal, types.FunctionType)
-    assert isinstance(exit_msg, unicode)
-    MISSIONS[name] = Mission(name, desc, goal, exit_msg)
+def add_missions():
+    for f in os.listdir('missions'):
+        if not f.endswith('.py'): continue
+        if f == '__init__.py': continue
+        modname = '.' + f[:-3] # 'foo.py' -> '.foo'
+        m = importlib.import_module(modname, 'missions')
+        assert hasattr(m, 'name') and isinstance(m.name, str)
+        assert hasattr(m, 'desc') and isinstance(m.desc, unicode)
+        assert hasattr(m, 'goal') and isinstance(m.goal, types.FunctionType)
+        if hasattr(m, 'on_enter'):
+            assert isinstance(m.on_enter, types.FunctionType)
+        if hasattr(m, 'on_exit'):
+            assert isinstance(m.on_exit, types.FunctionType)
 
-
-_add_mission(
-    'clone_from_github',
-    u'Githubからcloneしよう',
-    lambda: True,
-    u'おめでとう！')
-
-_add_mission(
-    'sentinel',
-    u'すべてのミッションが完了しました。',
-    lambda: False,
-    u'おめでとう！')
+        MISSIONS[m.name] = m
 
 
 def check_mission_achieved():
     m = MISSIONS.get(data['mission'])
     if not m:
-        raise RuntimeError("active mission name in savedata is not found in missions")
+        raise RuntimeError(
+            "active mission name '%s'in savedata is not found in missions"
+            % data['mission'])
     is_OK = m.goal()
     if is_OK:
         print "OK"
-        print m.exit_msg
     else:
         print "NG"
         print m.desc
@@ -46,7 +43,9 @@ def check_mission_achieved():
 
 
 SCENARIO = {
-    'clone_from_github': 'sentinel'
+    'clone_from_github': 'git_status',
+    'git_status': 'make_gitignore',
+    'make_gitignore': 'sentinel',
 }
 
 
@@ -70,6 +69,7 @@ def save():
 
 
 if __name__ == '__main__':
+    add_missions()
     load()
     is_ok = check_mission_achieved()
     if is_ok:
