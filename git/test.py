@@ -82,9 +82,7 @@ def save():
 
 
 def parse_args():
-    argparse.ArgumentParser(description='Check whether mission cleared or not.')
-    parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                   help='an integer for the accumulator')
+    parser = argparse.ArgumentParser(description='Check whether mission cleared or not.')
     parser.add_argument('--enter', dest='enter_mission', action='store',
                         metavar='mission',
                         help='enter to a mission (for debug)')
@@ -96,9 +94,13 @@ def parse_args():
 def main():
     add_missions()
     load()
-    is_ok = check_mission_achieved()
-    if is_ok:
-        enter_next_mission()
+    args = parse_args()
+    if args.enter_mission:
+        enter_to(args.enter_mission)
+    else:
+        is_ok = check_mission_achieved()
+        if is_ok:
+            enter_next_mission()
     save()
 
 
