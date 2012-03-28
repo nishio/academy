@@ -47,6 +47,7 @@ def enter_next_mission():
     current_mission = data['mission']
     next_mission = SCENARIO[current_mission]
     data['mission'] = next_mission
+    data['solved'].append(current_mission)
     m = MISSIONS[next_mission]
     print m.desc
 
@@ -56,7 +57,8 @@ def load():
     try:
         data = cPickle.load(file('savedata', 'rb'))
     except:
-        data = {'mission': 'clone_from_github'}
+        data = {'mission': 'clone_from_github',
+                'solved': []}
 
 
 def save():
