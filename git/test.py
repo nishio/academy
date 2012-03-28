@@ -7,6 +7,7 @@ import cPickle
 import types
 import importlib
 import os
+import argparse
 from scenario import SCENARIO
 
 MISSIONS = {}
@@ -69,6 +70,18 @@ def load():
 
 def save():
     cPickle.dump(data, file('savedata', 'wb'))
+
+
+def parse_args():
+    argparse.ArgumentParser(description='Check whether mission cleared or not.')
+    parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                   help='an integer for the accumulator')
+    parser.add_argument('--enter', dest='enter_mission', action='store',
+                        metavar='mission',
+                        help='enter to a mission (for debug)')
+
+    args = parser.parse_args()
+    return args
 
 
 def main():
