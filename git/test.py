@@ -37,10 +37,12 @@ def check_mission_achieved():
             % current_mission)
     is_OK = m.goal()
     if is_OK:
-        print "OK"
+        print "OK", current_mission, "CLEAR!!"
     else:
         print "NG"
+        print "=" * 5 + " current mission " + "=" * 5
         print m.desc
+        print "=" * 20
     return is_OK
 
 
@@ -50,7 +52,10 @@ def enter_next_mission():
     data['mission'] = next_mission
     data['solved'].append(current_mission)
     m = MISSIONS[next_mission]
+    print "=" * 5 + " next mission " + "=" * 5
     print m.desc
+    print "=" * 20
+
 
 
 def load():
@@ -73,6 +78,7 @@ def main():
     if is_ok:
         enter_next_mission()
     save()
+
 
 if __name__ == '__main__':
     main()
