@@ -7,6 +7,7 @@ import cPickle
 import types
 import importlib
 import os
+from scenario import SCENARIO
 
 MISSIONS = {}
 
@@ -40,13 +41,6 @@ def check_mission_achieved():
         print "NG"
         print m.desc
     return is_OK
-
-
-SCENARIO = {
-    'clone_from_github': 'git_status',
-    'git_status': 'make_gitignore',
-    'make_gitignore': 'sentinel',
-}
 
 
 def enter_next_mission():
