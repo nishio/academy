@@ -50,13 +50,19 @@ def check_mission_achieved():
 def enter_next_mission():
     current_mission = data['mission']
     next_mission = SCENARIO[current_mission]
-    data['mission'] = next_mission
     data['solved'].append(current_mission)
-    m = MISSIONS[next_mission]
+    enter_to(next_mission)
+
+
+def enter_to(mission_name):
+    assert isinstance(mission_name, str)
+    data['mission'] = mission_name
+    m = MISSIONS[mission_name]
     print "=" * 5 + " next mission " + "=" * 5
     print m.desc
     print "=" * 20
-
+    if hasattr(m, "on_enter"):
+        m.on_enter()
 
 
 def load():
