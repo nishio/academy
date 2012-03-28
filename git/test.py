@@ -37,11 +37,6 @@ def check_mission_achieved():
             "active mission name '%s'in savedata is not found in missions"
             % current_mission)
     is_OK = m.goal()
-    if is_OK:
-        print "OK", current_mission, "CLEAR!!"
-    else:
-        print "NG"
-        print_mission_desc('current mission', m)
     return is_OK
 
 
@@ -100,7 +95,12 @@ def main():
     else:
         is_ok = check_mission_achieved()
         if is_ok:
+            print "OK", current_mission, "CLEAR!!"
             enter_next_mission()
+        else:
+            print "NG"
+            print_mission_desc('current mission', m)
+
     save()
 
 
