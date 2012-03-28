@@ -44,7 +44,8 @@ def check_mission_achieved():
 
 
 def enter_next_mission():
-    next_mission = SCENARIO[data['mission']]
+    current_mission = data['mission']
+    next_mission = SCENARIO[current_mission]
     data['mission'] = next_mission
     m = MISSIONS[next_mission]
     print m.desc
