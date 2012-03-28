@@ -41,10 +41,15 @@ def check_mission_achieved():
         print "OK", current_mission, "CLEAR!!"
     else:
         print "NG"
-        print "=" * 5 + " current mission " + "=" * 5
-        print m.desc
-        print "=" * 20
+        print_mission_desc('current mission', m)
     return is_OK
+
+
+def print_mission_desc(title, mission):
+    header =  "=" * 5 + " %s: %s " % (title, mission.name) + "=" * 5
+    print header
+    print mission.desc
+    print "=" * len(header)
 
 
 def enter_next_mission():
@@ -58,9 +63,7 @@ def enter_to(mission_name):
     assert isinstance(mission_name, str)
     data['mission'] = mission_name
     m = MISSIONS[mission_name]
-    print "=" * 5 + " next mission " + "=" * 5
-    print m.desc
-    print "=" * 20
+    print_mission_desc('next mission', m)
     if hasattr(m, "on_enter"):
         m.on_enter()
 
