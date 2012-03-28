@@ -29,11 +29,12 @@ def add_missions():
 
 
 def check_mission_achieved():
-    m = MISSIONS.get(data['mission'])
+    current_mission = data['mission']
+    m = MISSIONS.get(current_mission)
     if not m:
         raise RuntimeError(
             "active mission name '%s'in savedata is not found in missions"
-            % data['mission'])
+            % current_mission)
     is_OK = m.goal()
     if is_OK:
         print "OK"
