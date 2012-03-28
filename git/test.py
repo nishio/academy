@@ -62,10 +62,13 @@ def save():
     cPickle.dump(data, file('savedata', 'wb'))
 
 
-if __name__ == '__main__':
+def main():
     add_missions()
     load()
     is_ok = check_mission_achieved()
     if is_ok:
         enter_next_mission()
     save()
+
+if __name__ == '__main__':
+    main()
