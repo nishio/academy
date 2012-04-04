@@ -29,15 +29,14 @@ def add_missions():
         MISSIONS[m.name] = m
 
 
-def check_mission_achieved():
+def get_current_mission():
     current_mission = data['mission']
     m = MISSIONS.get(current_mission)
     if not m:
         raise RuntimeError(
             "active mission name '%s'in savedata is not found in missions"
             % current_mission)
-    is_OK = m.goal()
-    return is_OK
+    return m
 
 
 def print_mission_desc(title, mission):
@@ -47,10 +46,9 @@ def print_mission_desc(title, mission):
     print "=" * len(header)
 
 
-def enter_next_mission():
-    current_mission = data['mission']
-    next_mission = SCENARIO[current_mission]
-    data['solved'].append(current_mission)
+def enter_next_mission(m):
+    next_mission = SCENARIO[m.name]
+    data['solved'].append(m.name)
     enter_to(next_mission)
 
 
@@ -93,13 +91,16 @@ def main():
     if args.enter_mission:
         enter_to(args.enter_mission)
     else:
-        is_ok = check_mission_achieved()
+        current_mission = get_current_mission()
+        print "TEST", current_mission.name
+        is_ok = current_mission.goal()
         if is_ok:
-            print "OK", current_mission, "CLEAR!!"
-            enter_next_mission()
+            print "OK"
+            print current_mission.name, "CLEAR!!"
+            enter_next_mission(current_mission)
         else:
             print "NG"
-            print_mission_desc('current mission', m)
+            print_mission_desc('current mission', current_mission)
 
     save()
 
