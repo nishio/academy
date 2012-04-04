@@ -96,7 +96,8 @@ def main():
         is_ok = current_mission.goal()
         if is_ok:
             print "OK"
-            print current_mission.name, "CLEAR!!"
+            print "*" * 5 + "CONGRATULATION!! " + current_mission.name + " CLEAR!!" + "*" * 5
+            print
             enter_next_mission(current_mission)
         else:
             print "NG"

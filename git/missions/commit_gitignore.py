@@ -4,16 +4,14 @@ import re
 
 name = 'commit_gitignore'
 desc = u'''
-さて、.gitignoreをコミット対象に登録することができた
-ではgit commitしてみよう。
+さて、.gitignoreをコミット対象に登録することができた。ではgit commitしてみよう。
+大丈夫、変なcommitをしてもあなたのマシンの中にcloneした
+あなたの個人用リポジトリに書きこむだけだから誰にも迷惑はかからない！
 '''
 
 def goal():
-    raise NotImplementedError
     p = Popen(["git", 'status'], stdout=PIPE)
     stdout, stderr = p.communicate()
-    m = re.search(r"Untracked files:.*\.gitignore", stdout, re.DOTALL)
+    m = re.search(r"\.gitignore", stdout)
     if m: return False
-    m = re.search(r"new file:   .gitignore", stdout)
-    if m: return True
     return True
