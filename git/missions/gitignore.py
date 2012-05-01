@@ -2,7 +2,7 @@
 from subprocess import Popen, PIPE
 import re
 
-name = 'make_gitignore'
+name = 'gitignore'
 desc = u'''
 savedataが「Untracked files」(gitで管理されてないファイル)として表示されたはず
 savedataの変更はgitで管理したくないので無視する設定をしよう。
@@ -12,6 +12,8 @@ savedataの変更はgitで管理したくないので無視する設定をしよ
 def goal():
     p = Popen(["git", 'status'], stdout=PIPE)
     stdout, stderr = p.communicate()
-    m = re.search("Untracked files:.*\tsavedata", stdout, re.DOTALL)
+    m = re.search("Untracked files:.*savedata", stdout, re.DOTALL)
     if m: return False
-    return True
+    m = re.search(r"Untracked files:.*\.gitignore", stdout, re.DOTALL)
+    if m: return True
+    return False
